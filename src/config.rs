@@ -78,9 +78,15 @@ lazy_static::lazy_static! {
     pub static ref OVERWRITE_DISPLAY_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
     pub static ref DEFAULT_LOCAL_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
     pub static ref OVERWRITE_LOCAL_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
-    pub static ref HARD_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
+    // Fatima Desk: the open-source server has no accounts or shared address
+    // book, so hide login, account settings and the account address book.
+    pub static ref HARD_SETTINGS: RwLock<HashMap<String, String>> = RwLock::new(HashMap::from([
+        ("disable-account".to_owned(), "Y".to_owned()),
+    ]));
     pub static ref BUILTIN_SETTINGS: RwLock<HashMap<String, String>> = RwLock::new(HashMap::from([
         ("hide-powered-by-me".to_owned(), "Y".to_owned()),
+        // Fatima Desk runs the open-source server, which has no WebSocket support.
+        ("hide-websocket-settings".to_owned(), "Y".to_owned()),
     ]));
 }
 
@@ -115,8 +121,10 @@ const CHARS: &[char] = &[
     'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
 ];
 
-pub const RENDEZVOUS_SERVERS: &[&str] = &["rs-ny.rustdesk.com"];
-pub const RS_PUB_KEY: &str = "OeVuKk5nlHiXp+APNn0Y3pC1Iwpwn44JGqrQCsWqmBw=";
+// Fatima Desk server on the VPS (~/fatimadesk-server): ID server on 21216; the
+// NAT test (21215) and relay (21217) ports are derived as -1 / +1 from it.
+pub const RENDEZVOUS_SERVERS: &[&str] = &["217.77.7.236:21216"];
+pub const RS_PUB_KEY: &str = "aJVhTH6HNoPGjnx5RsWJIk3lUZKFN2ZfvMJBJU7N+Bs=";
 
 pub const RENDEZVOUS_PORT: i32 = 21116;
 pub const RELAY_PORT: i32 = 21117;

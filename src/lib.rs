@@ -255,7 +255,9 @@ where
 }
 
 pub fn is_valid_custom_id(id: &str) -> bool {
-    regex::Regex::new(r"^[a-zA-Z][\w-]{5,15}$")
+    // Fatima Desk also allows exactly 9 digits, like the auto-generated IDs;
+    // the Fatima Desk server refuses any ID already in use.
+    regex::Regex::new(r"^(?:[a-zA-Z][\w-]{5,15}|[0-9]{9})$")
         .unwrap()
         .is_match(id)
 }

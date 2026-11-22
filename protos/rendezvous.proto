@@ -14,7 +14,13 @@ enum ConnType {
   VIEW_CAMERA = 4;
 }
 
-message RegisterPeerResponse { bool request_pk = 2; }
+message RegisterPeerResponse {
+  bool request_pk = 2;
+  // Fatima Desk: the device's alias, and a numeric ID the admin assigned in
+  // the Console (the device applies it with a normal Change ID).
+  string fd_alias = 100;
+  string fd_assign_id = 101;
+}
 
 message PunchHoleRequest { 
   string id = 1; 
@@ -170,6 +176,30 @@ message HealthCheck {
   string token = 1;
 }
 
+// Fatima Desk: aliases. A device keeps its numeric ID and may also have an
+// alias; clients resolve an alias to the ID before connecting.
+message FdAliasRequest { string alias = 1; }
+message FdAliasResponse {
+  string alias = 1;
+  string id = 2; // empty when the alias is unknown
+}
+message FdSetAlias {
+  string id = 1;
+  bytes uuid = 2;
+  string alias = 3; // empty removes the alias
+}
+message FdSetAliasResponse {
+  enum Result {
+    OK = 0;
+    UUID_MISMATCH = 1;
+    ALIAS_EXISTS = 2;
+    TOO_FREQUENT = 3;
+    INVALID_FORMAT = 4;
+    SERVER_ERROR = 5;
+  }
+  Result result = 1;
+}
+
 message RendezvousMessage {
   oneof union {
     RegisterPeer register_peer = 6;
@@ -193,5 +223,9 @@ message RendezvousMessage {
     OnlineResponse online_response = 24;
     KeyExchange key_exchange = 25;
     HealthCheck hc = 26;
+    FdAliasRequest fd_alias_request = 100;
+    FdAliasResponse fd_alias_response = 101;
+    FdSetAlias fd_set_alias = 102;
+    FdSetAliasResponse fd_set_alias_response = 103;
   }
 }

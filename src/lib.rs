@@ -255,11 +255,19 @@ where
 }
 
 pub fn is_valid_custom_id(id: &str) -> bool {
-    // Fatima Desk also allows exactly 9 digits, like the auto-generated IDs;
-    // the Fatima Desk server refuses any ID already in use.
-    regex::Regex::new(r"^(?:[a-zA-Z][\w-]{5,15}|[0-9]{9})$")
+    // Fatima Desk: the ID is always 9 digits, like the auto-generated ones;
+    // names go in the alias instead. The server refuses an ID already in use.
+    regex::Regex::new(r"^[1-9][0-9]{8}$")
         .unwrap()
         .is_match(id)
+}
+
+/// Fatima Desk: an alias is a letter followed by 5-15 letters, digits, "_"
+/// or "-", so it can never be mistaken for a numeric ID.
+pub fn is_valid_fd_alias(alias: &str) -> bool {
+    regex::Regex::new(r"^[a-zA-Z][\w-]{5,15}$")
+        .unwrap()
+        .is_match(alias)
 }
 
 // Support 1.1.10-1, the number after - is a patch version.

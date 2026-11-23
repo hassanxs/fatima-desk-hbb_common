@@ -306,6 +306,7 @@ message FdSetAliasResponse {
     TOO_FREQUENT = 3;
     INVALID_FORMAT = 4;
     SERVER_ERROR = 5;
+    NOT_ALLOWED = 6; // the device already has an alias; only the admin can change it
   }
   Result result = 1;
 }

@@ -262,10 +262,10 @@ pub fn is_valid_custom_id(id: &str) -> bool {
         .is_match(id)
 }
 
-/// Fatima Desk: an alias is a letter followed by 5-15 letters, digits, "_"
+/// Fatima Desk: an alias is a letter followed by 3-15 letters, digits, "_"
 /// or "-", so it can never be mistaken for a numeric ID.
 pub fn is_valid_fd_alias(alias: &str) -> bool {
-    regex::Regex::new(r"^[a-zA-Z][\w-]{5,15}$")
+    regex::Regex::new(r"^[a-zA-Z][\w-]{3,15}$")
         .unwrap()
         .is_match(alias)
 }
